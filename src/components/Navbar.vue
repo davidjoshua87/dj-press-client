@@ -5,7 +5,7 @@
         <button class="navbar-collape navbar-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
           aria-expanded="false" aria-label="Toggle navigation">
           <router-link class="navbar-brand" :to="{ path: '/'}">
-            <i class="fa fa-bars">   Dj-Press</i>
+            <i class="fa fa-bars"> Dj-Press</i>
           </router-link>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -69,12 +69,15 @@
                       <input class="form-control" placeholder="Title" name="title" type="text" v-model="newPost.title">
                     </div>
                     <div class="form-group">
-                      Title:
-                      <input class="form-control" placeholder="Title" name="title" type="text" v-model="newPost.title">
+                      Category:
+                      <input class="form-control" placeholder="Category" name="category" type="text" v-model="newPost.category">
                     </div>
                     <div class="form-group">
                       Content:
                       <editor class="form-control" v-model="newPost.content"></editor>
+                    </div>
+                    <div class="form-group">
+                      <input type="file" class="form-control" @change="postimageHandler">
                     </div>
                     <input class="btn btn-lg btn-success btn-block" type="submit" value="Submit" @click="emitPost">
                   </div>
@@ -101,7 +104,10 @@
         showModalAdd: false,
         newPost: {
           title: '',
-          content: ''
+          content: '',
+          category: '',
+          pic: '',
+          progress: 0,
         }
       }
     },
@@ -114,10 +120,19 @@
       ])
     },
     methods: {
+      postimageHandler: function (event) {
+        console.log(event.target.files[0])
+        this.pic = event.target.files[0]
+      },
       emitPost: function () {
-        this.$store.dispatch('emitPost', this.newPost)
-        this.newPost.title = ''
-        this.newPost.content = ''
+        console.log('masukkkkkkkkk')
+        let formData = new FormData()
+        formData.append('title', this.title)
+        formData.append('content', this.content)
+        formData.append('category', this.category)
+        formData.append('pic', this.pic)
+        console.log(formData)
+        this.$store.dispatch('emitPost', formData)
         window.location.href = ('/')
       },
       emitLogout: function () {
@@ -166,7 +181,7 @@
   }
 
   .modal-mask {
-    position: fixed;
+    position: relative;
     z-index: 9998;
     top: 0;
     left: 0;

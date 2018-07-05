@@ -21,12 +21,14 @@
       </div>
       <div class="col-md-8 mx-auto">
         <div class="article" v-for="(article,i) in articles" :key='i'>
+          <p>{{article}}</p>
           <div class="post-preview">
             <router-link :to="{ name: 'ArticleMain', params: { id: article._id }}">
               <h2 class="post-title">
                 {{article.title}}
               </h2>
             </router-link>
+            <img :src="article.pic" style="width:100%" height="250">
             <p class="post-meta">Posted by
               <a>{{article.author.name}}</a> on {{ stringDate(article.createdAt) }}
             </p>

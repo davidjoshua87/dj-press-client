@@ -98,14 +98,21 @@ export default new Vuex.Store({
       $axios({
         method: 'post',
         url: '/articles',
-        data: {
+        formData: {
           title: payload.title,
           author: context.state.user.id,
-          content: payload.content
+          content: payload.content,
+          category: payload.category,
+          pic: payload.pic
         }
       }).then(response => {
+        self.progress = 0
         console.log('success add new post')
         context.dispatch('getArticles')
+      })
+      .catch(err => {
+        err.response.statusText,
+        self.progress = 0
       })
     },
     emitEdit: function (context, payload) {
