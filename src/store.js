@@ -5,7 +5,7 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 const $axios = axios.create({
-  baseURL: 'http://blog-server.unguhiu.com'
+  baseURL: 'http://localhost:3000'
 })
 
 export default new Vuex.Store({
