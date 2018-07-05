@@ -95,25 +95,16 @@ export default new Vuex.Store({
       })
     },
     emitPost: function (context, payload) {
-      $axios({
-        method: 'post',
-        url: '/articles',
-        formData: {
-          title: payload.title,
-          author: context.state.user.id,
-          content: payload.content,
-          category: payload.category,
-          pic: payload.pic
-        }
-      }).then(response => {
-        self.progress = 0
-        console.log('success add new post')
-        context.dispatch('getArticles')
-      })
-      .catch(err => {
-        err.response.statusText,
-        self.progress = 0
-      })
+      let formData = new FormData()
+      formData.append('title', payload.title)
+      formData.append('content', payload.content)
+      formData.append('category', payload.category)
+      formData.append('pic', payload.pic)
+      axios.post(`${$axios}/articles`, formData)
+      .then(response => {
+          console.log('success add new post')
+          context.dispatch('getArticles')
+        })
     },
     emitEdit: function (context, payload) {
       $axios({

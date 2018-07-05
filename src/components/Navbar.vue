@@ -74,12 +74,13 @@
                     </div>
                     <div class="form-group">
                       Content:
-                      <editor class="form-control" v-model="newPost.content"></editor>
+                      <textarea class="form-control" name="content" v-model="newPost.content"></textarea>
                     </div>
                     <div class="form-group">
+                      Picture:
                       <input type="file" class="form-control" @change="postimageHandler">
                     </div>
-                    <input class="btn btn-lg btn-success btn-block" type="submit" value="Submit" @click="emitPost">
+                    <input class="btn btn-lg btn-success btn-block" type="submit" value="Submit" @click="emitUpload">
                   </div>
                 </div>
               </div>
@@ -92,12 +93,13 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import swal from 'sweetalert2'
   import Editor from '@tinymce/tinymce-vue';
   import {
     mapState
   } from 'vuex'
-
+const baseURL = 'http://localhost:3000'
   export default {
     data() {
       return {
@@ -107,7 +109,6 @@
           content: '',
           category: '',
           pic: '',
-          progress: 0,
         }
       }
     },
@@ -121,19 +122,10 @@
     },
     methods: {
       postimageHandler: function (event) {
-        console.log(event.target.files[0])
-        this.pic = event.target.files[0]
+        this.newPost.pic = event.target.files[0]
       },
-      emitPost: function () {
-        console.log('masukkkkkkkkk')
-        let formData = new FormData()
-        formData.append('title', this.title)
-        formData.append('content', this.content)
-        formData.append('category', this.category)
-        formData.append('pic', this.pic)
-        console.log(formData)
-        this.$store.dispatch('emitPost', formData)
-        window.location.href = ('/')
+      emitUpload: function () {
+        this.$store.dispatch('emitPost', this.newPost)
       },
       emitLogout: function () {
         localStorage.setItem('token', '')
