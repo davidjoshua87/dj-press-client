@@ -99,7 +99,7 @@
   import {
     mapState
   } from 'vuex'
-const baseURL = 'http://localhost:3000'
+  const baseURL = 'http://localhost:3000'
   export default {
     data() {
       return {
@@ -125,7 +125,17 @@ const baseURL = 'http://localhost:3000'
         this.newPost.pic = event.target.files[0]
       },
       emitUpload: function () {
-        this.$store.dispatch('emitPost', this.newPost)
+        let formData = new FormData()
+        formData.append('title', this.newPost.title)
+        formData.append('content', this.newPost.content)
+        formData.append('category', this.newPost.category)
+        formData.append('pic', this.newPost.pic)
+        axios.post(`${baseURL}/articles`, formData)
+          .then(response => {
+            console.log('success add new post')
+            this.$store.dispatch('getArticles')
+            window.location.href = ('/')
+          })
       },
       emitLogout: function () {
         localStorage.setItem('token', '')

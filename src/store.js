@@ -92,19 +92,8 @@ export default new Vuex.Store({
       }).then(response => {
         console.log('success get data')
         context.commit('getArticles', response.data.data)
+        console.log(response.data.data,'=============ada datanya')
       })
-    },
-    emitPost: function (context, payload) {
-      let formData = new FormData()
-      formData.append('title', payload.title)
-      formData.append('content', payload.content)
-      formData.append('category', payload.category)
-      formData.append('pic', payload.pic)
-      axios.post(`${$axios}/articles`, formData)
-      .then(response => {
-          console.log('success add new post')
-          context.dispatch('getArticles')
-        })
     },
     emitEdit: function (context, payload) {
       $axios({
